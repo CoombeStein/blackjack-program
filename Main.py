@@ -55,29 +55,32 @@ class App(ctk.CTk):
         dealer_score = event.widget.get().split()
         for word in dealer_score:
             if word.upper() in cards_values:
-                self.total_dealer_score = self.total_dealer_score + cards_values[word.upper()]
+                self.total_dealer_score = cards_values[word.upper()]
         
+        #if player has 17 or more always stand
         if self.total_player_score >= 17 :
             print("stand")
-        
+        #if player has 11 or less always hit
         elif self.total_player_score <= 11:
             print("hit")
-        
+
+        #if player has 12, hit if dealer has 3 or less or 7 or more,
+        # otherwise stand
+        elif self.total_player_score == 12:
+            if self.dealer_score <= 3:
+                print("hit")
+            elif self.dealer_score >=7:
+                print("hit")
+            else:
+                print("stand")
+
+        #if player has 16 or less, hit if dealer has 7 or more, otherwise stand
         elif self.total_player_score <=16:
             if self.total_dealer_score >=7:
                 print("hit")
             else:
                 print("stand")
             
-        elif self.total_player_score <=13:
-            if self.total_dealer_score <=3:
-                print("hit")
-            else:
-                print("stand")
-        else:
-            print("stand")
-
-
 if __name__ == "__main__":
     App()
 
