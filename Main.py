@@ -33,29 +33,33 @@ class App(ctk.CTk):
         player_card_label = ctk.CTkLabel(root, text="What cards do you have?\n remember"
             "to awnser with only the\n number or first letter of the card")
         player_card_label.pack()
-        player_cards = ctk.CTkEntry(root, placeholder_text="eg: A 7")
-        player_cards.bind('<Return>', self.hit_or_stand)
-        player_cards.pack()
+        self.player_cards = ctk.CTkEntry(root, placeholder_text="eg: A 7")
+        self.player_cards.pack()
 
         #asking user to input dealer cards
         dealer_card_label= ctk.CTkLabel(root,text="What card does yhe dealer have?\n"
             " remember to awnser with only the\n number or first letter of the card")
         dealer_card_label.pack()
-        dealer_cards = ctk.CTkEntry(root, placeholder_text="eg: A 7")
-        dealer_cards.pack()
+        self.dealer_cards = ctk.CTkEntry(root, placeholder_text="eg: A 7")
+        self.dealer_cards.pack()
+
+        enter_button = ctk.CTkButton(root,text="Enter",command=self.hit_or_stand)
+        enter_button.pack(pady=20)
 
         root.mainloop()
-    
-    def hit_or_stand(self, event):
-        player_score = event.widget.get().split()
+
+    def hit_or_stand(self):
+        player_score = self.player_cards.get().split()
         for word in player_score:
             if word.upper() in cards_values:
                 self.total_player_score = self.total_player_score + cards_values[word.upper()]
                 
-        dealer_score = event.widget.get().split()
+        dealer_score = self.dealer_cards.get().split()
         for word in dealer_score:
             if word.upper() in cards_values:
                 self.total_dealer_score = cards_values[word.upper()]
+
+        
         
         #if player has 17 or more always stand
         if self.total_player_score >= 17 :
