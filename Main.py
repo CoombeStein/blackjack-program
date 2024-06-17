@@ -30,22 +30,33 @@ class App(ctk.CTk):
         root.geometry('330x560')
 
         # asking user to input player cards
-        player_card_label = ctk.CTkLabel(root, text="What cards do you have?\n remember "
-            "to awnser with only the\n number or first letter of the card",font=("arial",20))
+        player_card_label = ctk.CTkLabel(root, text="What cards "
+                                          "do you have? ",font=("arial",20))
         player_card_label.pack()
         
-        self.player_cards = ctk.CTkEntry(root, placeholder_text="eg: A 7")
-        self.player_cards.pack()
+        player_help_label = ctk.CTkLabel(root,text="remember to awnser with"
+            " only the\n number or first letter of the card",font=("arial",10))
+        player_help_label.pack()
+        
+        self.player_cards = ctk.CTkEntry(root, placeholder_text="eg: A 7",
+            width=190, height=45)
+        self.player_cards.pack(pady=20)
 
         #asking user to input dealer cards
-        dealer_card_label= ctk.CTkLabel(root,text="What card does the dealer have?\n"
-            " remember to awnser with only the\n number or first letter of the card", font=("arial",20))
-        dealer_card_label.pack()
+        dealer_card_label= ctk.CTkLabel(root,text="What card does the dealer "
+            "have?", font=("arial",20))
+        dealer_card_label.pack(pady=20)
+        
+        dealer_help_label=ctk.CTkLabel(root,text="remember to awnser with only"
+            "the\n number or first letter of the card",font=("arial",10))
+        dealer_help_label.pack()
        
-        self.dealer_cards = ctk.CTkEntry(root, placeholder_text="eg: A 7")
-        self.dealer_cards.pack()
+        self.dealer_cards = ctk.CTkEntry(root, placeholder_text="eg: A 7",
+            width=190, height=45)
+        self.dealer_cards.pack(pady=20)
 
-        enter_button = ctk.CTkButton(root,text="Enter",command=self.hit_or_stand)
+        enter_button = ctk.CTkButton(root,text="Enter"
+            ,command=self.hit_or_stand)
         enter_button.pack(pady=20)
 
         root.mainloop()
