@@ -32,7 +32,7 @@ class App(ctk.CTk):
         # asking user to input player cards
         player_card_label = ctk.CTkLabel(root, text="What cards "
                                           "do you have? ",font=("arial",20))
-        player_card_label.pack()
+        player_card_label.pack(pady=20)
         
         player_help_label = ctk.CTkLabel(root,text="remember to awnser with"
             " only the\n number or first letter of the card",font=("arial",10))
@@ -55,7 +55,7 @@ class App(ctk.CTk):
             width=190, height=45)
         self.dealer_cards.pack(pady=20)
 
-        enter_button = ctk.CTkButton(root,text="Enter"
+        enter_button = ctk.CTkButton(root,text="Enter", width=160, height=40
             ,command=self.hit_or_stand)
         enter_button.pack(pady=20)
 
@@ -72,8 +72,6 @@ class App(ctk.CTk):
             if word.upper() in cards_values:
                 self.total_dealer_score = cards_values[word.upper()]
 
-        
-        
         #if player has 17 or more always stand
         if self.total_player_score >= 17 :
             print("stand")
