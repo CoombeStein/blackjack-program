@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-ctk.set_appearance_mode("light")
+ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
 
 #dictionary of all the cards values in a deck
@@ -27,19 +27,21 @@ class App(ctk.CTk):
         super().__init__()
 
         root = ctk.CTk()
-        root.geometry('400x240')
+        root.geometry('330x560')
 
         # asking user to input player cards
-        player_card_label = ctk.CTkLabel(root, text="What cards do you have?\n remember"
-            "to awnser with only the\n number or first letter of the card")
+        player_card_label = ctk.CTkLabel(root, text="What cards do you have?\n remember "
+            "to awnser with only the\n number or first letter of the card",font=("arial",20))
         player_card_label.pack()
+        
         self.player_cards = ctk.CTkEntry(root, placeholder_text="eg: A 7")
         self.player_cards.pack()
 
         #asking user to input dealer cards
-        dealer_card_label= ctk.CTkLabel(root,text="What card does yhe dealer have?\n"
-            " remember to awnser with only the\n number or first letter of the card")
+        dealer_card_label= ctk.CTkLabel(root,text="What card does the dealer have?\n"
+            " remember to awnser with only the\n number or first letter of the card", font=("arial",20))
         dealer_card_label.pack()
+       
         self.dealer_cards = ctk.CTkEntry(root, placeholder_text="eg: A 7")
         self.dealer_cards.pack()
 
@@ -84,7 +86,9 @@ class App(ctk.CTk):
                 print("hit")
             else:
                 print("stand")
-            
+        else:
+            print("stand")
+                                                    
 if __name__ == "__main__":
     App()
 
