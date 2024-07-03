@@ -18,13 +18,14 @@ cards_values = {
     "2":2,
         }
 class App(ctk.CTk):
+   
     total_player_score = 0
     total_dealer_score = 0 
+    
     def __init__(self):
         super().__init__()
         self.root = ctk.CTk()
         self.root.geometry('330x560')
-
         self.start()
         self.root.mainloop()
 
@@ -73,8 +74,6 @@ class App(ctk.CTk):
             if word.upper() in cards_values:
                 self.total_dealer_score = cards_values[word.upper()]
 
-
-
         #if player has 17 or more always stand
         if self.total_player_score >= 17 :
             self.stand()
@@ -88,7 +87,6 @@ class App(ctk.CTk):
                  self.hit()
             elif self.dealer_score >=7:
                 self.hit()
-
 
             else:
                 self.stand()
@@ -105,7 +103,7 @@ class App(ctk.CTk):
         self.frame_2.destroy()
         self.start()
     
-    def return_button(self, parent, callback):
+    def return_button_function(self, parent, callback):
         self.return_button = ctk.CTkButton(parent,text="would"
                 " you like to go again?", width=160, height=40,
                 command=callback)
@@ -120,7 +118,7 @@ class App(ctk.CTk):
                                             "arial",40))
         self.player_stand.pack(pady=80)
 
-        self.return_button(self.frame_2, self.restart)
+        self.return_button_function(self.frame_2, self.restart)
     
     def hit(self):
         self.main_frame.destroy()
