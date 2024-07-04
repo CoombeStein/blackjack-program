@@ -59,7 +59,7 @@ class App(ctk.CTk):
             width=190, height=45)
         self.dealer_cards.pack(pady=20)
 
-        enter_button = ctk.CTkButton(self.main_frame,text="Enter", width=160, height=40
+        enter_button = ctk.CTkButton(self.main_frame,text="Enter", width=190, height=45
             ,command=self.hit_or_stand)
         enter_button.pack(pady=20)
 
@@ -73,6 +73,9 @@ class App(ctk.CTk):
         for word in dealer_score:
             if word.upper() in cards_values:
                 self.total_dealer_score = cards_values[word.upper()]
+
+        if self.total_player_score >= 21:
+            print("bust")
 
         #if player has 17 or more always stand
         if self.total_player_score >= 17 :
@@ -105,7 +108,7 @@ class App(ctk.CTk):
     
     def return_button_function(self, parent, callback):
         self.return_button = ctk.CTkButton(parent,text="would"
-                " you like to go again?", width=160, height=40,
+                " you like to go again?",width=190, height=45,
                 command=callback)
         self.return_button.pack()
     
@@ -119,7 +122,13 @@ class App(ctk.CTk):
         self.player_stand.pack(pady=80)
 
         self.return_button_function(self.frame_2, self.restart)
-    
+         
+        self.total_dealer_score = 0
+        self.total_player_score = 0
+
+
+
+
     def hit(self):
         self.main_frame.destroy()
         self.frame_2 = ctk.CTkFrame(self.root)
@@ -130,12 +139,13 @@ class App(ctk.CTk):
 
         self.player_hit_entry=ctk.CTkEntry(self.frame_2, placeholder_text="eg: A 7",
             width=190, height=45)
+        self.player_hit_entry.pack(pady=20)
 
-        enter_button_2 = ctk.CTkButton(self.frame_2,text="Enter", width=160, height=40
+        enter_button_2 = ctk.CTkButton(self.frame_2,text="Enter", width=190, height=45
             ,command=self.hit_or_stand)
         enter_button_2.pack(pady=20)
 
-        self.return_button(self.frame_2, self.restart)
+        self.return_button_function(self.frame_2, self.restart)
     
 
 
