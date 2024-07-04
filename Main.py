@@ -42,7 +42,7 @@ class App(ctk.CTk):
         player_help_label = ctk.CTkLabel(self.main_frame,text="remember to awnser with"
             " only the\n number or first letter of the card",font=("arial",10))
         player_help_label.pack()
-        
+
         self.player_cards = ctk.CTkEntry(self.main_frame, placeholder_text="eg: A 7",
             width=190, height=45)
         self.player_cards.pack(pady=20)
@@ -60,16 +60,20 @@ class App(ctk.CTk):
         self.dealer_cards.pack(pady=20)
 
         enter_button = ctk.CTkButton(self.main_frame,text="Enter", width=190, height=45
-            ,command=self.hit_or_stand)
+            ,command=lambda: self.hit_or_stand(p_cards=self.player_cards, 
+                d_cards=self.dealer_cards))
         enter_button.pack(pady=20)
 
-    def hit_or_stand(self):
-        player_score = self.player_cards.get().split()
+    def hit_or_stand(self, p_cards = None, d_cards = None):
+        player_score = p_cards.get().split()
         for word in player_score:
             if word.upper() in cards_values:
                 self.total_player_score = self.total_player_score + cards_values[word.upper()]
                 
-        dealer_score = self.dealer_cards.get().split()
+        if d_cards != None:
+            self.previous_dealer_cards = d_cards.get()
+
+        dealer_score = d_cards and d_cards.get().split() or self.previous_dealer_cards.split()
         for word in dealer_score:
             if word.upper() in cards_values:
                 self.total_dealer_score = cards_values[word.upper()]
@@ -142,7 +146,7 @@ class App(ctk.CTk):
         self.player_hit_entry.pack(pady=20)
 
         enter_button_2 = ctk.CTkButton(self.frame_2,text="Enter", width=190, height=45
-            ,command=self.hit_or_stand)
+            ,command=lambda: self.hit_or_stand(p_cards=self.player_hit_entry))
         enter_button_2.pack(pady=20)
 
         self.return_button_function(self.frame_2, self.restart)
