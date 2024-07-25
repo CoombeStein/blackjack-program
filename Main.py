@@ -70,6 +70,7 @@ class App(ctk.CTk):
 
     def hit_or_stand(self, p_cards = None, d_cards = None):
         print("called hit or stand")
+        print(self.player_cards.get())
         player_score = p_cards.get().split()
         for word in player_score:
             if word.upper() in cards_values:
@@ -115,7 +116,7 @@ class App(ctk.CTk):
         else:
             self.stand()
             print("called 8")
-
+    
     def restart(self):
         self.frame_2.destroy()
         self.start()
@@ -160,6 +161,9 @@ class App(ctk.CTk):
         enter_button_2.pack(pady=20)
 
         self.return_button_function(self.frame_2, self.restart)
+
     
+            
+
 if __name__ == "__main__":
     App()
