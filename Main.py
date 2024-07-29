@@ -16,7 +16,9 @@ cards_values = {
     "4":4,
     "3":3,
     "2":2,
-        }
+    
+}
+
 
 cards_list = list(cards_values.keys())
 print(cards_list)
@@ -70,7 +72,6 @@ class App(ctk.CTk):
 
     def hit_or_stand(self, p_cards = None, d_cards = None):
         print("called hit or stand")
-        print(self.player_cards.get())
         player_score = p_cards.get().split()
         for word in player_score:
             if word.upper() in cards_values:
@@ -85,6 +86,13 @@ class App(ctk.CTk):
                 self.total_dealer_score = cards_values[word.upper()]
         if self.total_player_score >= 21:
             print("bust")
+        
+        if self.total_player_score > 21:
+            player_score = p_cards.get().split()
+            for A in player_score:
+                self.ace_21()
+            
+         
         #if player has 17 or more always stand
         if self.total_player_score >= 17 :
             self.stand()
@@ -161,6 +169,21 @@ class App(ctk.CTk):
         enter_button_2.pack(pady=20)
 
         self.return_button_function(self.frame_2, self.restart)
+
+
+# we was doinhg someweird shit with aces idk
+    def ace_21(self):
+        for card in self.player_cards.get().split():
+            if card.upper() == "A":
+                cards_values['A'] = 1
+                new_score = 0
+                self.total_player_score = cards_values[card.upper()]
+ 
+                cards_values['A'] = 11
+               
+                break
+        
+
 
     
             
