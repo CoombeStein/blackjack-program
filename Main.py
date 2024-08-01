@@ -6,7 +6,7 @@ cards_values = {
     "A":11,
     "K":10,
     "Q":10,
-    "j":10,
+    "J":10,
     "10":10,
     "9":9,
     "8":8,
@@ -52,9 +52,12 @@ class App(ctk.CTk):
             " only the\n number or first letter of the card",font=("arial",10))
         player_help_label.pack()
         
-        self.player_cards = ctk.CTkEntry(self.main_frame, placeholder_text="eg: A 7",
-            width=190, height=45)
-        self.player_cards.pack(pady=20)
+        self.player_card_1 = ctk.CTkOptionMenu(self.main_frame,values=list(cards_values))
+        self.player_card_1.pack(pady=20)
+        self.player_card_2 = ctk.CTkOptionMenu(self.main_frame,values=list(cards_values))
+        self.player_card_2.pack(pady=20)
+        self.player_cards = self.player_card_1.get() + self.player_card_2.get()
+
         #asking user to input dealer cards
         dealer_card_label= ctk.CTkLabel(self.main_frame,text="What card does the dealer "
             "have?", font=("arial",20))
@@ -69,23 +72,20 @@ class App(ctk.CTk):
         self.dealer_cards.pack(pady=20)
 
         enter_button = ctk.CTkButton(self.main_frame,text="Enter", width=190, height=45,
-            command=self.hit_or_stand)
+            command=lambda: self.hit_or_stand(self.player_cards))
         enter_button.pack(pady=20)
 
-    def hit_or_stand(self):
+    def hit_or_stand(self, player_cards):
         print("called hit or stand")
         # old way
         # player_score = p_cards.get().split()
 
-        for card in self.player_cards.get().split():
-            if not card.lower() in self.player_cards_list:
-                self.player_cards_list.append(card.lower())
+        for card in player_cards.split():
+            self.player_cards_list.append(card.lower())
 
         for card in self.player_cards_list:
             if card.upper() in cards_values:
                 self.total_player_score = self.total_player_score + cards_values[card.upper()]
-
-        print(self.total_dealer_score)
 
         if not self.dealer_cards_list:
             self.previous_dealer_cards = copy.deepcopy(self.dealer_cards_list)          
@@ -97,10 +97,10 @@ class App(ctk.CTk):
         if self.total_player_score >= 21:
             print("bust")
         
+        # if player has over 21 it will update players total score
         if self.total_player_score > 21:
             self.ace_21()
             
-         
         #if player has 17 or more always stand
         if self.total_player_score >= 17 :
             self.stand()
@@ -160,6 +160,9 @@ class App(ctk.CTk):
         self.total_dealer_score = 0
         self.total_player_score = 0
 
+        self.player_cards_list = []
+        self.dealer_cards_list = []
+
     def hit(self):
         self.delete_result_frame()
         self.main_frame.destroy()
@@ -167,12 +170,11 @@ class App(ctk.CTk):
         self.frame_2.pack(fill="both",expand=1)
         self.player_hit=ctk.CTkLabel(self.frame_2, text="Hit", font=("arial",40))
         self.player_hit.pack(pady=80)
-        self.player_hit_entry=ctk.CTkEntry(self.frame_2, placeholder_text="eg: A 7",
-            width=190, height=45)
+        self.player_hit_entry=ctk.CTkOptionMenu(self.frame_2,values=list(cards_values))
         self.player_hit_entry.pack(pady=20)
 
         enter_button_2 = ctk.CTkButton(self.frame_2,text="Enter", width=190, height=45
-            ,command=self.hit_or_stand)
+            ,command=lambda: self.hit_or_stand(self.player_hit_entry))
         enter_button_2.pack(pady=20)
 
         self.return_button_function(self.frame_2, self.restart)
@@ -180,20 +182,19 @@ class App(ctk.CTk):
 
 # we was doinhg someweird shit with aces idk
     def ace_21(self):
-        print(f'cards before {self.player_cards_list}')
+        print(f'before {self.player_cards_list}')
         for card_data in enumerate(self.player_cards_list):
             index, card = list(card_data)
             if card.upper() == "A":
-                print(index)
-                self.total_player_score = self.total_player_score - 10
-                
+                self.player_cards_list[index] = str(cards_values['1'])
+                print(f'after {self.player_cards_list}')
                 break
-        print(f'cards after {self.player_cards_list}')
-        
-
-
-    
-            
+        new_player_score = 0
+        for card in self.player_cards_list:
+            if type(card) is str:
+                card = cards_values[card.upper()]
+            new_player_score += int(card)
+        self.total_player_score = new_player_score
 
 if __name__ == "__main__":
     App()
