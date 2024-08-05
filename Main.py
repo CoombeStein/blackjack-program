@@ -27,7 +27,10 @@ print(cards_list)
 class App(ctk.CTk):
     total_player_score = 0
     total_dealer_score = 0 
-    
+
+
+    player_cards = []
+    dealer_cards = []
     player_cards_list = []
     dealer_cards_list = []
 
@@ -56,7 +59,7 @@ class App(ctk.CTk):
         self.player_card_1.pack(pady=20)
         self.player_card_2 = ctk.CTkOptionMenu(self.main_frame,values=list(cards_values))
         self.player_card_2.pack(pady=20)
-        self.player_cards = self.player_card_1.get() + self.player_card_2.get()
+        self.player_cards = [self.player_card_1.get(), self.player_card_2.get()]
 
         #asking user to input dealer cards
         dealer_card_label= ctk.CTkLabel(self.main_frame,text="What card does the dealer "
@@ -80,7 +83,7 @@ class App(ctk.CTk):
         # old way
         # player_score = p_cards.get().split()
 
-        for card in player_cards.split():
+        for card in player_cards:
             self.player_cards_list.append(card.lower())
 
         for card in self.player_cards_list:
@@ -174,7 +177,7 @@ class App(ctk.CTk):
         self.player_hit_entry.pack(pady=20)
 
         enter_button_2 = ctk.CTkButton(self.frame_2,text="Enter", width=190, height=45
-            ,command=lambda: self.hit_or_stand(self.player_hit_entry))
+            ,command=lambda: self.hit_or_stand(list(self.player_hit_entry.get())))
         enter_button_2.pack(pady=20)
 
         self.return_button_function(self.frame_2, self.restart)
