@@ -28,11 +28,7 @@ class App(ctk.CTk):
     total_player_score = 0
     total_dealer_score = 0 
 
-
-    player_cards = []
-    dealer_cards = []
     player_cards_list = []
-    dealer_cards_list = []
 
     def __init__(self):
         super().__init__()
@@ -59,7 +55,6 @@ class App(ctk.CTk):
         self.player_card_1.pack(pady=20)
         self.player_card_2 = ctk.CTkOptionMenu(self.main_frame,values=list(cards_values))
         self.player_card_2.pack(pady=20)
-        self.player_cards = [self.player_card_1.get(), self.player_card_2.get()]
 
         #asking user to input dealer cards
         dealer_card_label= ctk.CTkLabel(self.main_frame,text="What card does the dealer "
@@ -70,15 +65,24 @@ class App(ctk.CTk):
             "the\n number or first letter of the card",font=("arial",10))
         dealer_help_label.pack()
        
-        self.dealer_cards = ctk.CTkEntry(self.main_frame, placeholder_text="eg: A 7",
-            width=190, height=45)
+        self.dealer_cards =  ctk.CTkOptionMenu(self.main_frame,values=list(cards_values))
         self.dealer_cards.pack(pady=20)
 
         enter_button = ctk.CTkButton(self.main_frame,text="Enter", width=190, height=45,
-            command=lambda: self.hit_or_stand(self.player_cards))
+            command=lambda: self.hit_or_stand())
         enter_button.pack(pady=20)
 
-    def hit_or_stand(self, player_cards):
+    def hit_or_stand(self, p_cards: list=None):
+        if not hasattr(self, 'player_cards'):
+            print("does not have")
+            self.player_cards = [self.player_card_1.get(), self.player_card_2.get()]
+    
+        # can assume that the dealers score hasnt been stored
+        if self.total_dealer_score == 0:
+            self.total_dealer_score = cards_values[self.dealer_cards.get().upper()]
+
+        player_cards = p_cards or self.player_cards
+            
         print("called hit or stand")
         # old way
         # player_score = p_cards.get().split()
@@ -89,20 +93,19 @@ class App(ctk.CTk):
         for card in self.player_cards_list:
             if card.upper() in cards_values:
                 self.total_player_score = self.total_player_score + cards_values[card.upper()]
-
-        if not self.dealer_cards_list:
-            self.previous_dealer_cards = copy.deepcopy(self.dealer_cards_list)          
-
-        dealer_score = self.dealer_cards_list or self.previous_dealer_cards
-        for card in dealer_score:
-            if card.upper() in cards_values:
-                self.total_dealer_score = cards_values[card.upper()]
+       
+        print(self.total_player_score)
+       
         if self.total_player_score >= 21:
             print("bust")
+            self.bust()
         
         # if player has over 21 it will update players total score
         if self.total_player_score > 21:
             self.ace_21()
+        
+        print(f' player score {self.total_player_score}')
+        print(f' dealer score {self.total_dealer_score}')
             
         #if player has 17 or more always stand
         if self.total_player_score >= 17 :
@@ -137,8 +140,13 @@ class App(ctk.CTk):
             print("called 8")
     
     def restart(self):
+        del self.player_cards
+        self.total_dealer_score = 0
+        self.total_player_score = 0
+        self.player_cards_list.clear()
         self.frame_2.destroy()
         self.start()
+        
     
     def return_button_function(self, parent, callback):
         self.return_button = ctk.CTkButton(parent,text="would"
@@ -163,8 +171,7 @@ class App(ctk.CTk):
         self.total_dealer_score = 0
         self.total_player_score = 0
 
-        self.player_cards_list = []
-        self.dealer_cards_list = []
+        self.player_cards_list.clear()
 
     def hit(self):
         self.delete_result_frame()
@@ -177,7 +184,7 @@ class App(ctk.CTk):
         self.player_hit_entry.pack(pady=20)
 
         enter_button_2 = ctk.CTkButton(self.frame_2,text="Enter", width=190, height=45
-            ,command=lambda: self.hit_or_stand(list(self.player_hit_entry.get())))
+            ,command=lambda: self.hit_or_stand([self.player_hit_entry.get()]))
         enter_button_2.pack(pady=20)
 
         self.return_button_function(self.frame_2, self.restart)
@@ -195,9 +202,26 @@ class App(ctk.CTk):
         new_player_score = 0
         for card in self.player_cards_list:
             if type(card) is str:
+                print(card)
                 card = cards_values[card.upper()]
             new_player_score += int(card)
         self.total_player_score = new_player_score
+    
+    def bust(self):
+        self.delete_result_frame()
+        self.main_frame.destroy()
+        self.frame_2 = ctk.CTkFrame(self.root)
+        self.frame_2.pack(fill="both", expand=1)
+        self.player_bust = ctk.CTkLabel(self.frame_2,text="You busted with{total_player_score}",font=(""
+                                            "arial",40))
+        self.player_bust.pack(pady=80)
+        self.return_button_function(self.frame_2, self.restart)
+         
+        self.total_dealer_score = 0
+        self.total_player_score = 0
+
+        self.player_cards_list.clear()
+
 
 if __name__ == "__main__":
     App()
