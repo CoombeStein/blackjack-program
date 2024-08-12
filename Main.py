@@ -94,21 +94,24 @@ class App(ctk.CTk):
             if card.upper() in cards_values:
                 self.total_player_score = self.total_player_score + cards_values[card.upper()]
        
-        print(self.total_player_score)
+    
+        print(f' player score {self.total_player_score}')
+        print(f' dealer score {self.total_dealer_score}')
        
-        if self.total_player_score >= 21:
-            print("bust")
-            self.bust()
+        
         
         # if player has over 21 it will update players total score
         if self.total_player_score > 21:
             self.ace_21()
+
+        if self.total_player_score > 21:
+            print("bust")
+            self.bust()
         
-        print(f' player score {self.total_player_score}')
-        print(f' dealer score {self.total_dealer_score}')
+    
             
         #if player has 17 or more always stand
-        if self.total_player_score >= 17 :
+        elif self.total_player_score >= 17 :
             self.stand()
             print("called 1")
         #if player has 11 or less always hit
@@ -210,17 +213,15 @@ class App(ctk.CTk):
     def bust(self):
         self.delete_result_frame()
         self.main_frame.destroy()
-        self.frame_2 = ctk.CTkFrame(self.root)
+        self.frame_2.destroy()
+        self.frame_2= ctk.CTkFrame(self.root)
         self.frame_2.pack(fill="both", expand=1)
-        self.player_bust = ctk.CTkLabel(self.frame_2,text="You busted with{total_player_score}",font=(""
-                                            "arial",40))
-        self.player_bust.pack(pady=80)
+        self.player_bust = ctk.CTkLabel(self.frame_2,text=f"You busted with a\n score of more than 21",font=(""
+                                            "arial",20))
+        self.player_bust.pack(pady=(80,0))
+        self.player_bust_2 = ctk.CTkLabel(self.frame_2,text = self.total_player_score)
+        self.player_bust_2.pack(pady = (0,80))
         self.return_button_function(self.frame_2, self.restart)
-         
-        self.total_dealer_score = 0
-        self.total_player_score = 0
-
-        self.player_cards_list.clear()
 
 
 if __name__ == "__main__":
