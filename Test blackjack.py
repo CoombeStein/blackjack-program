@@ -1,6 +1,11 @@
+""""""
+
 import customtkinter as ctk, copy
+from PIL import Image
+
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
+
 #dictionary of all the cards values in a deck
 cards_values = {
     "A":11,
@@ -19,6 +24,7 @@ cards_values = {
     "1":1,
 }
 
+ 
 #making a list of all the card keys for later use in the ace function
 cards_list = list(cards_values.keys())
 
@@ -49,6 +55,12 @@ class App(ctk.CTk):
         # asking user to input player cards
         self.main_frame = ctk.CTkFrame(self.root)
         self.main_frame.pack(fill="both",expand=1)
+
+        image = Image.open("Background.jpg")
+        background_image = ctk.CTkImage(image, size=(330,500))
+        
+        ctk.CTkLabel(self.main_frame, image=background_image, text=""
+        ).place(relx=0.5,rely=0.5,anchor=ctk.CENTER)
 
         player_card_label = ctk.CTkLabel(self.main_frame, text="What cards "
                                           "do you have? ",font=("arial",20))
@@ -224,23 +236,23 @@ class App(ctk.CTk):
         self.return_button_function(self.frame_2, self.restart)
 
 
-    #Function that changes aces to 1 when the total score over 21 and 
-    #recalculates the total player score
+    # Function that changes aces to 1 when the total score over 21 and 
+    # recalculates the total player score
     def ace_21(self):
-        #making card list
+        # making card list
         for card_data in enumerate(self.player_cards_list):
             index, card = list(card_data)
             
-            #checking if they have an ace
+            # checking if they have an ace
             if card.upper() == "A":
 
                 #changes ace to 1
                 self.player_cards_list[index] = str(cards_values['1'])
                 
-                #breaks loop after ace has been changed to 1
+                # breaks loop after ace has been changed to 1
                 break
         
-        #restets total player score
+        # restets total player score
         new_player_score = 0
         for card in self.player_cards_list:
             if type(card) is str:                
