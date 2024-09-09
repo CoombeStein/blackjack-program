@@ -1,4 +1,8 @@
-""""""
+"""
+Blackjack aid is a program that helps the user increase their chances of 
+winning in blackjack by telling them what move to make based off their and 
+the dealers cards
+"""
 
 import customtkinter as ctk, copy
 from PIL import Image
@@ -60,7 +64,7 @@ class App(ctk.CTk):
         background_image = ctk.CTkImage(image, size=(330,500))
         
         ctk.CTkLabel(self.main_frame, image=background_image, text=""
-        ).place(relx=0.5,rely=0.5,anchor=ctk.CENTER)
+            ).place(relx=0.5,rely=0.5,anchor=ctk.CENTER)
 
         player_card_label = ctk.CTkLabel(self.main_frame, text="What cards "
                                           "do you have? ",font=("arial",20))
@@ -72,11 +76,11 @@ class App(ctk.CTk):
         player_help_label.pack()
         
         self.player_card_1 = ctk.CTkOptionMenu(self.main_frame, width = 190,
-             height = 45, font=("arial",20),values=list(cards_values))
+            height = 45, font=("arial",20),values=list(cards_values))
         self.player_card_1.pack(pady=20)
 
         self.player_card_2 = ctk.CTkOptionMenu(self.main_frame, width = 190,
-             height = 45, font=("arial",20),values=list(cards_values))
+            height = 45, font=("arial",20),values=list(cards_values))
         self.player_card_2.pack(pady=20)
 
         #asking user to input dealer cards

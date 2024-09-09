@@ -1,4 +1,11 @@
+"""
+Blackjack aid is a program that helps the user increase their chances of 
+winning in blackjack by telling them what move to make based off their and 
+the dealers cards
+"""
+
 import customtkinter as ctk, copy
+from PIL import Image
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
@@ -25,8 +32,11 @@ cards_values = {
 #making a list of all the card keys for later use in the ace function
 cards_list = list(cards_values.keys())
 
-#the main program put into a class so that the program can function properly
+
 class App(ctk.CTk):
+    """
+    the main program put into a class so that the program can function properly
+    """
     
     #making the total player and dealer score variables and player card list
     # varialbe for later 
@@ -34,8 +44,12 @@ class App(ctk.CTk):
     total_dealer_score = 0 
     player_cards_list = []
 
-    #start of GUI makes the geometry,title,and mainloop for gui
+
     def __init__(self):
+        """
+        start of GUI makes the geometry,title,and mainloop for gui
+        """
+
         super().__init__()
         self.root = ctk.CTk()
         self.root.title("Blackjack Aid")
@@ -45,14 +59,19 @@ class App(ctk.CTk):
         self.value_inside = ctk.StringVar(self.root)
         self.value_inside.set("Select an Option")
 
-    #start of program
-    #makes the first frame asking user to input their two cards and
-    #the dealer card
+
+
     def start(self):
+        """
+        start of program
+        makes the first frame asking user to input their two cards and
+        the dealer card
+        """
+
         # asking user to input player cards
         self.main_frame = ctk.CTkFrame(self.root)
         self.main_frame.pack(fill="both",expand=1)
-
+ 
         player_card_label = ctk.CTkLabel(self.main_frame, text="What cards "
                                           "do you have? ",font=("arial",20))
         player_card_label.pack(pady=20)
@@ -63,11 +82,11 @@ class App(ctk.CTk):
         player_help_label.pack()
         
         self.player_card_1 = ctk.CTkOptionMenu(self.main_frame, width = 190,
-             height = 45, font=("arial",20),values=list(cards_values))
+            height = 45, font=("arial",20),values=list(cards_values))
         self.player_card_1.pack(pady=20)
 
         self.player_card_2 = ctk.CTkOptionMenu(self.main_frame, width = 190,
-             height = 45, font=("arial",20),values=list(cards_values))
+            height = 45, font=("arial",20),values=list(cards_values))
         self.player_card_2.pack(pady=20)
 
         #asking user to input dealer cards
@@ -88,11 +107,16 @@ class App(ctk.CTk):
             command=lambda: self.hit_or_stand())
         enter_button.pack(pady=20)
 
-    #calculates playes and dealer score and chencks if they should hit or stand
-    #also chenckes if they have more that 21 and an ace to see if the ace should
-    # 1 or if they dont they bust
-    #calls the function corrisponding to what they should do
+
+
     def hit_or_stand(self, p_cards: list=None):
+        """
+        calculates playes and dealer score and chencks if they should hit or stand
+        also chenckes if they have more that 21 and an ace to see if the ace should
+        1 or if they dont they bust
+        calls the function corrisponding to what they should do
+        """
+
         if not hasattr(self, 'player_cards'):
             self.player_cards = [self.player_card_1.get(),
                 self.player_card_2.get()]
@@ -152,10 +176,12 @@ class App(ctk.CTk):
         else:
             self.stand()
 
-    
-    #function that restarts the program by ressetting data and calling the first
-    # function in the loop
+
     def restart(self):
+        """
+        function that restarts the program by ressetting data and calling the first
+        function in the loop
+        """
         del self.player_cards
         self.total_dealer_score = 0
         self.total_player_score = 0
@@ -163,23 +189,33 @@ class App(ctk.CTk):
         self.frame_2.destroy()
         self.start()
 
-        
-    #function that makes a button that calls the restart function
+
     def return_button_function(self, parent, callback):
+        """    
+        function that makes a button that calls the restart function
+        """
+
         self.return_button = ctk.CTkButton(parent,text="Go again?",width=190,
              height=45,font=("arial",20), command=callback)
         self.return_button.pack()
 
 
-    #Function that deletes the second frame(hit, stand, or bust frame)
+
     def delete_result_frame(self):
+        """
+        Function that deletes the second frame(hit, stand, or bust frame)
+        """
+
         if hasattr(self, 'frame_2'):
             self.frame_2.destroy()
 
-    
-    # function that makes a frame that tells the user to stand 
-    #contains the return button
+
     def stand(self):
+        """
+        function that makes a frame that tells the user to stand 
+        contains the return button
+        """
+
         self.delete_result_frame()
         self.main_frame.destroy()
         self.frame_2 = ctk.CTkFrame(self.root)
@@ -199,9 +235,12 @@ class App(ctk.CTk):
         self.player_cards_list.clear()
 
 
-    #function that makes a new frame that tells the user to hit
-    #contains option menu for new card, enter button, and return button
     def hit(self):
+        """
+        function that makes a new frame that tells the user to hit
+        contains option menu for new card, enter button, and return button
+        """
+
         self.delete_result_frame()
         self.main_frame.destroy()
         self.frame_2 = ctk.CTkFrame(self.root)
@@ -227,23 +266,27 @@ class App(ctk.CTk):
         self.return_button_function(self.frame_2, self.restart)
 
 
-    #Function that changes aces to 1 when the total score over 21 and 
-    #recalculates the total player score
+
     def ace_21(self):
-        #making card list
+        """
+        Function that changes aces to 1 when the total score over 21 and 
+        recalculates the total player score
+        """
+
+        # making card list
         for card_data in enumerate(self.player_cards_list):
             index, card = list(card_data)
             
-            #checking if they have an ace
+            # checking if they have an ace
             if card.upper() == "A":
 
                 #changes ace to 1
                 self.player_cards_list[index] = str(cards_values['1'])
                 
-                #breaks loop after ace has been changed to 1
+                # breaks loop after ace has been changed to 1
                 break
         
-        #restets total player score
+        # restets total player score
         new_player_score = 0
         for card in self.player_cards_list:
             if type(card) is str:                
@@ -251,10 +294,13 @@ class App(ctk.CTk):
             new_player_score += int(card)
         self.total_player_score = new_player_score
 
-    
-    #function that tells the user that the busted
-    #contains return button
+
     def bust(self):
+        """
+        function that tells the user that the busted
+        contains return button
+        """
+
         #destroying previus frames
         self.delete_result_frame()
         self.main_frame.destroy()
